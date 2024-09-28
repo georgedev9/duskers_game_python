@@ -5,6 +5,7 @@ class Duskers:
 
     def __init__(self, r_seed, a_min, a_max, location: str):
         random.seed(r_seed)
+        self.is_running = True
         self.anim_min_duration = int(a_min)
         self.anim_max_duration = int(a_max)
         self.locations = location.replace("_", " ").split(",")
@@ -307,28 +308,28 @@ class Duskers:
 
     def inside_play_menu(self):
 
-        while True:
+        while self.is_running:
 
             print(draw.inside_play_menu)
 
             user_option = input("\nYour command:\n").lower()
 
             if user_option == 'back':
-                return 'back'
+                break
             elif user_option == 'main':
-                return True
+                self.start_game()
             elif user_option == 'save':
                 self.save_game()
-                return False
+                self.is_running = False
             elif user_option == 'exit':
                 print("\nThanks for playing, bye!")
-                return False
+                self.is_running = False
             else:
                 print("Invalid input")
 
     def play_game(self):
 
-        while True:
+        while self.is_running:
 
             self.generate_hub()
 
@@ -341,22 +342,14 @@ class Duskers:
             elif user_option == 'save':
                 self.save_game()
             elif user_option == 'm':
-                option = self.inside_play_menu()
-
-                if option == 'back':
-                    pass
-                elif option:
-                    break
-                elif not option:
-                    return True
+                self.inside_play_menu()
             elif user_option == 'back':
                 break
             elif user_option == 'main':
-                self.welcome_screen()
                 break
             elif user_option == 'exit':
                 print("\nThanks for playing, bye!")
-                return True
+                self.is_running = False
             else:
                 print("Invalid input")
 
@@ -367,9 +360,9 @@ class Duskers:
 
     def start_game(self):
 
-        self.welcome_screen()
+        while self.is_running:
 
-        while True:
+            self.welcome_screen()
 
             user_option = input("\nYour command:\n").lower()
 
@@ -377,28 +370,38 @@ class Duskers:
                 self.user_name = input("\nEnter your name:\n")
                 print(f"\nGreetings, commander {self.user_name}!")
                 print("Are you ready to begin? \n[Yes] [No] Return to Main[Menu]")
+
+                while self.is_running:
+                    user_answer = input()
+                    if user_answer == 'yes':
+                        self.play_game()
+                    elif user_answer == 'no':
+                        print("\nHow about now.")
+                        print("Are you ready to begin? \n   [Yes] [No]")
+                    elif user_answer == 'menu':
+                        break
+                    elif user_answer == 'exit':
+                        print("\nThanks for playing, bye!")
+                        self.is_running = False
+                    else:
+                        print("\nHow about now.")
+                        print("Are you ready to begin? \n   [Yes] [No]")
+
             elif user_option == 'load':
                 self.load_game()
                 self.play_game()
-                self.welcome_screen()
             elif user_option == 'exit':
                 print("\nThanks for playing, bye!")
-                break
+                self.is_running = False
             elif user_option == 'high':
                 self.show_scores()
             elif user_option == 'back' or user_option == 'menu':
-                self.welcome_screen()
+                continue
             elif user_option == 'help':
                 self.show_help()
-            elif user_option == 'yes':
-                if self.play_game():
-                    break
-                self.welcome_screen()
-            elif user_option == 'no':
-                print("\nHow about now.")
-                print("Are you ready to begin? \n   [Yes] [No]")
             else:
-                print("Invalid input")
+                print("\nInvalid input")
+                # time.sleep(3)
 
 
 def main():
