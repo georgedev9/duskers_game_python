@@ -401,7 +401,6 @@ class Duskers:
                 self.show_help()
             else:
                 print("\nInvalid input")
-                # time.sleep(3)
 
 
 def main():
