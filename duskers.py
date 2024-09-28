@@ -375,9 +375,6 @@ class Duskers:
                     user_answer = input()
                     if user_answer == 'yes':
                         self.play_game()
-                    elif user_answer == 'no':
-                        print("\nHow about now.")
-                        print("Are you ready to begin? \n   [Yes] [No]")
                     elif user_answer == 'menu':
                         break
                     elif user_answer == 'exit':
